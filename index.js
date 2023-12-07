@@ -6,6 +6,7 @@ const Product = require("./db/Product")
 const Jwt = require('jsonwebtoken');
 const jwtKey = 'e-com';
 const app = express();
+const Base_url = process.env.PORT
 
 app.use(express.json());
 app.use(cors());
@@ -105,5 +106,8 @@ app.get("/search/:key", async (req, resp) => {
     });
     resp.send(result);
 })
+app.listen(process.env.PORT || 5000, function () {
+    console.log('App running on port 5000.');
+    
 
-app.listen(5000);
+});
