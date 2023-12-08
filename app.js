@@ -4,9 +4,11 @@ require("./db/config");
 const User = require('./db/User');
 const Product = require("./db/Product")
 const Jwt = require('jsonwebtoken');
-const jwtKey = 'e-com';
+// const jwtKey = 'e-com';
+const jwtKey = process.env.JWT_SECRET || 'e-com';
+
 const app = express();
-const Base_url = process.env.PORT
+// const DatabaseURL = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/dashboard';
 
 app.use(express.json());
 app.use(cors());
