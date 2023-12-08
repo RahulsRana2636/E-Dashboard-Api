@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("./db/config");
+const db = require("./db/config");
 const User = require('./db/User');
 const Product = require("./db/Product")
 const Jwt = require('jsonwebtoken');
@@ -108,8 +108,17 @@ app.get("/search/:key", async (req, resp) => {
     });
     resp.send(result);
 })
-app.listen(process.env.PORT || 5000, function () {
-    console.log('App running on port 5000.');
+// app.listen(process.env.PORT || 5000, function () {
+//     console.log('App running on port 5000.');
     
+
+// });
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.once("open", () => {
+  console.log("Connected to the MongoDB database");
+  // Start the server after the MongoDB connection is established
+  app.listen(process.env.PORT || 5000, function () {
+    console.log('App running on port 5000.');
+  });
 
 });
