@@ -1,8 +1,9 @@
-// const mongoose= require('mongoose');
-// mongoose.connect("mongodb://127.0.0.1:27017/dashboard")
-const mongoose = require("mongoose");
-const DatabaseURL = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/dashboard';
 
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+// const DatabaseURL = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/dashboard';
+dotenv.config();
+const DatabaseURL = process.env.DATABASE_URL;
 mongoose.connect(DatabaseURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

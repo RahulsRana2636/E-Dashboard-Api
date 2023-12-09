@@ -5,6 +5,8 @@ const User = require('./db/User');
 const Product = require("./db/Product")
 const Jwt = require('jsonwebtoken');
 // const jwtKey = 'e-com';
+
+const dotenv = require("dotenv");
 const jwtKey = process.env.JWT_SECRET || 'e-com';
 
 const app = express();
@@ -120,5 +122,4 @@ db.once("open", () => {
   app.listen(process.env.PORT || 5000, function () {
     console.log('App running on port 5000.');
   });
-
 });
