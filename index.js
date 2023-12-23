@@ -1,12 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./db/config");
+// const db = require("./db/config");
+require("./db/config");
 const User = require('./db/User');
 const Product = require("./db/Product")
 const Jwt = require('jsonwebtoken');
 // const jwtKey = 'e-com';
 
 const dotenv = require("dotenv");
+dotenv.config();
 const jwtKey = process.env.JWT_SECRET || 'e-com';
 
 const app = express();
@@ -115,11 +117,12 @@ app.get("/search/:key", async (req, resp) => {
     
 
 // });
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to the MongoDB database");
-  // Start the server after the MongoDB connection is established
-  app.listen(process.env.PORT || 5000, function () {
-    console.log('App running on port 5000.');
-  });
-});
+// db.on("error", console.error.bind(console, "MongoDB connection error:"));
+// db.once("open", () => {
+//   console.log("Connected to the MongoDB database");
+//   // Start the server after the MongoDB connection is established
+//   app.listen(process.env.PORT || 5000, function () {
+//     console.log('App running on port 5000.');
+//   });
+// });
+app.listen(5000);
