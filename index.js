@@ -3,6 +3,7 @@ const cors = require("cors");
 require("./db/config");
 const User = require('./db/User');
 const Product = require("./db/Product")
+const Cart = require("./db/CartProduct")
 const Jwt = require('jsonwebtoken');
 
 const dotenv = require("dotenv");
@@ -10,7 +11,6 @@ dotenv.config();
 const jwtKey = process.env.JWT_SECRET || 'e-com';
 
 const app = express();
-// const DatabaseURL = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/dashboard';
 
 app.use(express.json());
 app.use(cors());
@@ -83,14 +83,6 @@ app.put("/updateproduct/:id",verifyToken, async (req, resp) => {
     resp.send(result)
 });
 
-// app.put("/product/:id", async (req, resp) => {
-//     let result = await Product.updateOne(
-//         { _id: req.params.id },
-//         { $set: req.body }
-//     )
-//     resp.send(result)
-// });
-
 app.get("/search/:key", verifyToken, async (req, resp) => {
     let result = await Product.find({
         "$or": [
@@ -125,9 +117,41 @@ function verifyToken(req, resp, next) {
       resp.status(403).send({ result: "please add token with header" });
     }
   }
+
+// Route to add a product to the cart
+app.post("/add-to-cart", verifyToken, async (req, res) => {
+    try {
+        const cartItem = new Cart(req.body);
+        const result = await cartItem.save();
+        res.status(200).send(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ result: "Internal server error" });
+    }
+});
+
+app.get("/view-cart", verifyToken, async (req, res) => {
+    try {
+        const cartItems = await Cart.find();
+       res.send(cartItems);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ result: "Internal server error" });
+    }
+});
+
+
+app.delete("/remove-from-cart/:id", verifyToken, async (req, res) => {
+    try {
+        const result = await Cart.deleteOne({ _id: req.params.id });
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ result: "Internal server error" });
+    }
+});
+
 app.listen(5000, function () {
     console.log('App running on port 5000.');
     });
     
-
-
